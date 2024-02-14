@@ -51,11 +51,16 @@ server.listen(port, () => {
 });
 
 server.post('/upload', upload.single('image'), (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     res.sendFile(__dirname + '/views/upload.html');
 });
 
 server.get('/api', (req, res) => {
     const path = './upload';
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 
     fs.readdir(path, (err, items) => {
         res.json(items);
@@ -63,6 +68,8 @@ server.get('/api', (req, res) => {
 });
 
 server.get('/set', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     res.sendFile(__dirname + '/views/index.html');
 });
 
