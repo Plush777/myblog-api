@@ -58,9 +58,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    const production = process.env.NODE_ENV === 'production';
-
-    res.render('index.ejs', { production });
+    res.end(`<a href="/api">/api</a>`);
 });
 
 app.get('/api', (req, res) => {
@@ -75,7 +73,10 @@ app.get('/api', (req, res) => {
     });
 });
 
+const production = process.env.NODE_ENV === 'production';
 
-module.exports = (req, res) => {
-    app(req, res);
-};
+app.get('/set', (req, res) => {
+    res.render('index.ejs', { production });
+});
+
+module.exports = app;
