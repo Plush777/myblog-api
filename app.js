@@ -61,4 +61,6 @@ app.get('/', (req, res) => {
     const production = process.env.NODE_ENV === 'production';
 
     res.render('index.ejs', { production });
-})
+});
+
+module.exports = app;
