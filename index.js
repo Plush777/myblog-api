@@ -57,9 +57,6 @@ server.post('/upload', upload.single('image'), (req, res) => {
 server.get('/api', (req, res) => {
     const path = './upload';
 
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-
     fs.readdir(path, (err, items) => {
         res.json(items);
     });
@@ -70,6 +67,8 @@ server.get('/set', (req, res) => {
 });
 
 server.get('/', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     res.end('<a href="/api">API</a>');
 });
 
