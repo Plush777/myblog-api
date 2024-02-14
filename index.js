@@ -53,7 +53,14 @@ server.listen(port, () => {
 server.post('/upload', upload.single('image'), (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    res.sendFile(__dirname + '/views/upload.html');
+    res.end(` <div>업로드 성공!</div>
+    <a href="/set" onclick="resetFileInput()">홈으로</a>
+
+    <script>
+    const resetFileInput = () => {
+        document.getElementById('imageInput').value = '';
+    }
+    </script>`)
 });
 
 server.get('/api', (req, res) => {
@@ -70,7 +77,24 @@ server.get('/api', (req, res) => {
 server.get('/set', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    res.sendFile(__dirname + '/views/index.html');
+    res.end(`<h1>원하는 파일을 업로드하세요</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" id="imageInput" />
+        <input type="submit" id="upload" value="업로드" />
+    </form>
+
+    <script>
+    const upload = document.getElementById('upload');
+    const imageInput = document.getElementById('imageInput');
+
+    upload.addEventListener('click', (e) => {
+        if (imageInput.files.length === 0) {
+            e.preventDefault();
+            alert('파일을 선택하세요');
+            return;
+        } 
+    });
+    </script>`)
 });
 
 server.get('/', (req, res) => {
