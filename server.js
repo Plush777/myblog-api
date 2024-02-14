@@ -1,23 +1,11 @@
 const express = require('express');
-const app = express();
+const server = express();
 const bs = require('browser-sync').create();
 const port = 8000;
-const cors = require('cors');
 const multer = require('multer');
-const basicAuth = require('express-basic-auth');
-require('dotenv').config();
 
-const users = {
-    [process.env.BASIC_AUTH_USERNAME]: process.env.BASIC_AUTH_PASSWORD
-}
-
-app.use(basicAuth({
-    users,
-    challenge: true,
-}));
-app.use(cors());
-app.use(express.static(__dirname));
-app.set('view engine', 'ejs');
+server.use(express.static(__dirname));
+server.set('view engine', 'ejs');
 
 const today = new Date();
 const year = today.getFullYear();
@@ -35,13 +23,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.listen(port, () => {
+server.listen(port, () => {
     // Browsersync
     bs.init({
         proxy: `http://localhost:${port}`,
         port: 8080,
         ui: false, 
-        files: ['app.js','views/*.ejs'], // 감시할 파일 확장자
+        files: ['server.js','views/*.ejs'], // 감시할 파일 확장자
         browser: 'chrome',
         notify: true, // 브라우저 알림 
         online: false, // 오프라인 상태 감지 
@@ -49,18 +37,20 @@ app.listen(port, () => {
     });
 });
 
-app.get('public/images/:imageName', (req, res) => {
+server.get('public/images/:imageName', (req, res) => {
     res.sendFile(`${__dirname}/public/images/${req.params.imageName}`);
 });
 
-app.post('/upload', upload.single('image'), (req, res) => {
+server.post('/upload', upload.single('image'), (req, res) => {
     res.render('upload.ejs', { filename: req.file.originalname });
 });
 
 const production = process.env.NODE_ENV === 'production';
 
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
     res.render('index.ejs', { production });
 });
 
-module.exports = app;
+module.exports = {
+    server
+}
