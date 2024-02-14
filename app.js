@@ -63,4 +63,17 @@ app.get('/', (req, res) => {
     res.render('index.ejs', { production });
 });
 
+app.get('/api', (req, res) => {
+    const fs = require('fs');
+    const path = './upload';
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+
+    fs.readdir(path, (err, items) => {
+        res.json(items);
+    });
+});
+
+
 module.exports = app;

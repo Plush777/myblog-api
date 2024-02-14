@@ -1,4 +1,11 @@
 {
+  "name": "myblog-api",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
     "browser-sync": "^3.0.2",
     "cors": "^2.8.5",
