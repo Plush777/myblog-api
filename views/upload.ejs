@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>업로드 성공</title>
+</head>
+<body>
+    <div><%= filename %> 업로드 성공!</div>
+    <a href="/" onclick="resetFileInput()">홈으로</a>
+
+    <script>
+    const resetFileInput = () => {
+        document.getElementById('imageInput').value = '';
+    }
+    </script>
+</body>
+</html>
