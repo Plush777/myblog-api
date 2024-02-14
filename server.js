@@ -57,25 +57,9 @@ app.post('/upload', upload.single('image'), (req, res) => {
     res.render('upload.ejs', { filename: req.file.originalname });
 });
 
-app.get('/', (req, res) => {
-    res.end(`<a href="/api">/api</a>`);
-});
-
-app.get('/api', (req, res) => {
-    const fs = require('fs');
-    const path = './upload';
-
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-
-    fs.readdir(path, (err, items) => {
-        res.json(items);
-    });
-});
-
 const production = process.env.NODE_ENV === 'production';
 
-app.get('/set', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index.ejs', { production });
 });
 
