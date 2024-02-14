@@ -76,4 +76,6 @@ app.get('/api', (req, res) => {
 });
 
 
-module.exports = app;
+module.exports = (req, res) => {
+    app(req, res);
+};
