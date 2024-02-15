@@ -4,7 +4,7 @@ const port = 8000;
 const multer = require('multer');
 const basicAuth = require('express-basic-auth');
 const path = require('path');
-const upload = multer({ dest: '/tmp' });
+const tmp = multer({ dest: '/tmp' });
 require('dotenv').config();
 
 const users = {
@@ -26,23 +26,25 @@ const all = `${year}_${month}_${date}_`;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './upload'); 
+        cb(null, 'public/upload'); 
     },
     filename: (req, file, cb) => {
         cb(null, `${all}${file.originalname}`);
     },
 });
 
-const uploadStorage = multer({ storage });
+const upload = multer({ storage });
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-server.post('/upload', uploadStorage.single('image'), async (req, res) => {
-    // res.end('File is uploaded');
+server.post('/upload', upload.single('image'), (req, res) => {
+    res.end('File is uploaded');
+});
+
+server.post('/api/upload', tmp.single('image'), async (req, res) => {
     try {
-        // Move the uploaded file to a public directory (accessible after deployment)
         const destinationPath = path.join(__dirname, 'public', 'upload', req.file.originalname);
         await fs.rename(req.file.path, destinationPath);
 
