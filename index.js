@@ -26,7 +26,7 @@ const all = `${year}_${month}_${date}_`;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/upload'); 
+        cb(null, path.join(__dirname, 'public', 'upload')); 
     },
     filename: (req, file, cb) => {
         cb(null, `${all}${file.originalname}`);
