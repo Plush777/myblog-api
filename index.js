@@ -3,6 +3,8 @@ const server = express();
 const port = 8000;
 const multer = require('multer');
 const basicAuth = require('express-basic-auth');
+const path = require('path');
+const upload = multer({ dest: '/tmp' });
 require('dotenv').config();
 
 const users = {
@@ -31,27 +33,24 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage });
-
-const fs = require('fs');
+const uploadStorage = multer({ storage });
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-server.post('/upload', upload.single('image'), (req, res) => {
-    res.end('File is uploaded');
-});
+server.post('/upload', uploadStorage.single('image'), async (req, res) => {
+    // res.end('File is uploaded');
+    try {
+        // Move the uploaded file to a public directory (accessible after deployment)
+        const destinationPath = path.join(__dirname, 'public', 'upload', req.file.originalname);
+        await fs.rename(req.file.path, destinationPath);
 
-server.get('/api', (req, res) => {
-    const path = './upload';
-
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-
-    fs.readdir(path, (err, items) => {
-        res.json(items);
-    });
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 server.get('/set', (req, res) => {
@@ -59,9 +58,12 @@ server.get('/set', (req, res) => {
 });
 
 server.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    res.end('<a href="/api">/api</a>');
+    const fs = require('fs');
+    const path = 'public/upload';
+
+    fs.readdir(path, (err, items) => {
+        res.json(items);
+    });
 });
 
 module.exports = server;
