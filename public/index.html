@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+</head>
+<body> 
+    <script>
+    document.onkeydown = function (e) {
+        if (event.keyCode == 123) {
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+            return false;
+        }
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'T'.charCodeAt(0)) {
+            return false;
+        }
+    }
+    </script>
+    <h1>아래 버튼을 눌러 API key를 발급하세요.</h1>
+    <p>api 요청: /api/image/발급받은 API key</p>
+   
+    <button type="button" id="btnGetAPIkey">발급하기</button>
+    <div id="myKey"></div>
+
+    <script src="client.js"></script>
+</body> 
+</html>

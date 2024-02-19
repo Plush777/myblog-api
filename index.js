@@ -5,6 +5,7 @@ const multer = require('multer');
 const basicAuth = require('express-basic-auth');
 const path = require('path');
 const fs = require('fs');
+const uuidAPIkey = require('uuid-apikey');
 require('dotenv').config();
 
 const users = {
@@ -43,17 +44,35 @@ server.post('/upload', upload.single('image'), (req, res) => {
     res.end(`File is uploaded`);
 });
 
+//uuid apikey 라이브러리로 요청을 받았을 때 랜덤 키 발급.
+const key = uuidAPIkey.create();
+
+server.post('/api/key', (req, res) => {
+    res.json({
+        apiKey: key.apiKey,
+        uuid: key.uuid
+    });
+});
+
 server.get('/set', (req, res) => {
     res.sendFile('index.html', {root: path.join(__dirname, 'public')});
 });
 
 server.get('/', (req, res) => {
-    try {
+    res.sendFile('index.html', {root: path.join(__dirname, 'public')});
+});
+
+server.get('/api/image/:apiKey', (req, res) => {
+    let { apiKey } = req.params;
+
+    // https://www.npmjs.com/package/uuid-apikey
+    if (!uuidAPIkey.isAPIKey(apiKey) || !uuidAPIkey.check(apiKey, key.uuid)) {
+        res.send('검증되지 않은 API key입니다.');
+    } else {
         const path = 'public/upload';
 
         fs.readdir(path, (err, items) => {
             const responseData = {
-                result: 'success',
                 data: {
                     files: items
                 }
@@ -65,13 +84,7 @@ server.get('/', (req, res) => {
             res.setHeader('Content-Type', 'application/json');
             res.send(jsonOutput);
         });
-    } catch (error) {
-        res.json({
-            result: 'error',
-            message: error.message
-        });
     }
 });
-
 
 module.exports = server;
