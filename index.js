@@ -4,7 +4,7 @@ const port = 8000;
 const multer = require('multer');
 const basicAuth = require('express-basic-auth');
 const path = require('path');
-const tmp = multer({ dest: '/tmp' });
+const fs = require('fs');
 require('dotenv').config();
 
 const users = {
@@ -40,32 +40,38 @@ server.listen(port, () => {
 });
 
 server.post('/upload', upload.single('image'), (req, res) => {
-    res.end('File is uploaded');
+    res.end(`File is uploaded`);
 });
-
-// server.post('/api/upload', tmp.single('image'), async (req, res) => {
-//     try {
-//         const destinationPath = path.join(__dirname, 'public', 'upload', req.file.originalname);
-//         await fs.rename(req.file.path, destinationPath);
-
-//         res.json({ success: true });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 
 server.get('/set', (req, res) => {
     res.sendFile('index.html', {root: path.join(__dirname, 'public')});
 });
 
 server.get('/', (req, res) => {
-    const fs = require('fs');
-    const path = 'public/upload';
+    try {
+        const path = 'public/upload';
 
-    fs.readdir(path, (err, items) => {
-        res.json(items);
-    });
+        fs.readdir(path, (err, items) => {
+            const responseData = {
+                result: 'success',
+                data: {
+                    files: items
+                }
+            };
+
+            // JSON.stringify 마지막 인자는 들여쓰기 개수임.
+            const jsonOutput = JSON.stringify(responseData, null, 2);
+
+            res.setHeader('Content-Type', 'application/json');
+            res.send(jsonOutput);
+        });
+    } catch (error) {
+        res.json({
+            result: 'error',
+            message: error.message
+        });
+    }
 });
+
 
 module.exports = server;
