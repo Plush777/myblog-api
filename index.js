@@ -2,20 +2,10 @@ const express = require('express');
 const server = express();
 const port = 8000;
 const multer = require('multer');
-const basicAuth = require('express-basic-auth');
 const path = require('path');
 const fs = require('fs');
 const uuidAPIkey = require('uuid-apikey');
-require('dotenv').config();
 
-const users = {
-    [process.env.BASIC_AUTH_USERNAME]: process.env.BASIC_AUTH_PASSWORD
-}
-
-server.use(basicAuth({
-    users,
-    challenge: true,
-}));
 server.use(express.static("public"));
 
 const today = new Date();
@@ -67,7 +57,7 @@ server.get('/api/image/:apiKey', (req, res) => {
 
     // https://www.npmjs.com/package/uuid-apikey
     if (!uuidAPIkey.isAPIKey(apiKey) || !uuidAPIkey.check(apiKey, key.uuid)) {
-        res.send('검증되지 않은 API key입니다.');
+        res.send('API키가 아니거나 검증되지 않은 API key입니다.');
     } else {
         const path = 'public/upload';
 
