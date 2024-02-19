@@ -43,17 +43,17 @@ server.post('/upload', upload.single('image'), (req, res) => {
     res.end('File is uploaded');
 });
 
-server.post('/api/upload', tmp.single('image'), async (req, res) => {
-    try {
-        const destinationPath = path.join(__dirname, 'public', 'upload', req.file.originalname);
-        await fs.rename(req.file.path, destinationPath);
+// server.post('/api/upload', tmp.single('image'), async (req, res) => {
+//     try {
+//         const destinationPath = path.join(__dirname, 'public', 'upload', req.file.originalname);
+//         await fs.rename(req.file.path, destinationPath);
 
-        res.json({ success: true });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+//         res.json({ success: true });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 server.get('/set', (req, res) => {
     res.sendFile('index.html', {root: path.join(__dirname, 'public')});
