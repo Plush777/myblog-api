@@ -1,9 +1,11 @@
 const btnGetAPIkey = document.getElementById('btnGetAPIkey');
+const btnRetryAPIkey = document.getElementById('btnRetryAPIkey');
 const myKey = document.getElementById('myKey');
 const getButtonCount = localStorage.getItem('buttonCount');
 const getMyAPIkey = localStorage.getItem('apiKey');
+const hasCookie = document.cookie.includes('getAPIkeyReset=true');
 
-const getAPIkey = () => {
+const getAPIkey = (msg) => {
     fetch('/api/key', {
         method: 'POST',
         headers: {
@@ -12,7 +14,7 @@ const getAPIkey = () => {
     })
     .then(res => res.json())
     .then(data => {
-        alert('API key가 발급되었습니다.');
+        alert(msg);
         localStorage.setItem('apiKey', data.apiKey);
         localStorage.setItem('uuid', data.uuid);
         location.reload();
@@ -25,24 +27,50 @@ const getAPIkey = () => {
 
 let buttonCount = 0;
 
-btnGetAPIkey.addEventListener('click', () => {
-    const addCount = () => { 
-        buttonCount++;
-        localStorage.setItem('buttonCount', buttonCount);
-    }
+const addCount = () => { 
+    buttonCount++;
+    localStorage.setItem('buttonCount', buttonCount);
+}
 
-    if (buttonCount >= 1 || getButtonCount >= 1) {
+const APIkeyRemove = () => {
+    localStorage.removeItem('buttonCount');
+    localStorage.removeItem('apiKey');
+    localStorage.removeItem('uuid');
+}
+
+const createResetCookie = () => {
+    /* 쿠키를 만든 시점으로부터 하루 뒤에 만료되도록 설정합니다. 86400초 => 24시간 */
+    document.cookie = 'getAPIkeyReset=true; max-age=86400';
+    location.reload();
+}
+
+btnGetAPIkey.addEventListener('click', () => {
+    if (getButtonCount || hasCookie) {
         alert('API key는 한 번만 발급 가능합니다.');
     } else {
-        getAPIkey();
-    }
-
-    if (buttonCount > 0 || getButtonCount) {
-        return;
-    } else if(!buttonCount > 0 || !getButtonCount) {
         addCount();
+        getAPIkey('API key가 발급되었습니다.');
     }
 });
+
+btnRetryAPIkey.addEventListener('click', () => {
+    if (hasCookie) {
+        alert('API key 재발급은 재발급 후 24시간이 지난 뒤로부터 가능합니다.');
+        return;
+    } 
+    
+    if (!hasCookie && getButtonCount) {
+        createResetCookie();
+        APIkeyRemove();
+        addCount();
+        getAPIkey('API key 재발급에 성공했습니다.');
+    }
+});
+
+if (getButtonCount) {
+    btnRetryAPIkey.style.display = 'block';
+    btnGetAPIkey.style.display = 'none';
+}
 
 if (!getMyAPIkey) {
     myKey.innerHTML = '발급받은 API key가 없습니다.';

@@ -4,36 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>index</title>
+    <style>
+    .myKeyInfo{margin-top: 10px;
+        span{display: flex; column-gap: 10px;}
+    }
+
+    .table{margin-bottom: 30px;
+        table{border-collapse: collapse;}
+        th,td{border: 1px solid #000; text-align: center;}
+        td{font-size: 14px;}
+    }
+    </style>
 </head>
 <body> 
     <script>
-    document.onkeydown = function (e) {
-        if (event.keyCode == 123) {
-            return false;
+    if (!location.hostname === 'localhost') {
+        document.onkeydown = function (e) {
+            if (event.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'T'.charCodeAt(0)) {
+                return false;
+            }
         }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-            return false;
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-            return false;
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-            return false;
-        }
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-            return false;
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'T'.charCodeAt(0)) {
-            return false;
-        }
+    } else {
+        console.log('localhost')
     }
     </script>
     <h1>아래 버튼을 눌러 API key를 발급하세요.</h1>
-    <p>api 요청: /api/image/발급받은 API key</p>
+    <p>api 요청: /api/발급받은 API key/가져오고싶은 파일</p>
+
+    <h2>응답</h2>
+    <p>응답 성공 시 각 카테고리에 맞는 JSON 데이터를 반환합니다.
+    <br>응답 실패 혹은 존재하지 않는 데이터를 요청한경우 에러 메시지를 반환합니다.
+    </p>
+
+    <div class="table">
+        <table>
+            <colgroup>
+                <col style="width: 200px">
+                <col style="width: 200px">
+                <col style="width: 200px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">요소</th>
+                    <th scope="col">타입</th>
+                    <th scope="col">설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>image</td>
+                    <td>배열</td>
+                    <td>업로드 된 이미지 파일들을 가져옵니다.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
    
     <button type="button" id="btnGetAPIkey">발급하기</button>
-    <div id="myKey"></div>
-
+    <button type="button" id="btnRetryAPIkey" style="display: none;">재발급하기</button>
+    <div class="myKeyInfo">
+        <span>내 API Key: <div id="myKey"></div></span>
+    </div>
     <script src="client.js"></script>
 </body> 
 </html>
