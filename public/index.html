@@ -14,23 +14,13 @@
         th,td{border: 1px solid #000; text-align: center;}
         td{font-size: 14px;}
     }
+
+    .btnArea{position: relative; width: 70px; height: 24px;}
+    .loadDiv{position: absolute; top: 0; left: 0;}
     </style>
 </head>
 <body> 
     <script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-        if (getButtonCount) {
-            btnRetryAPIkey.style.display = 'block';
-            btnGetAPIkey.style.display = 'none';
-        }
-
-        if (!getMyAPIkey) {
-            myKey.innerHTML = '발급받은 API key가 없습니다.';
-        } else {
-            myKey.innerHTML = getMyAPIkey;
-        }
-    });
-
     if (location.hostname !== 'localhost') {
         document.onkeydown = function (e) {
             if (event.keyCode == 123) {
@@ -85,10 +75,14 @@
             </tbody>
         </table>
     </div>
-   
-    <button type="button" id="btnGetAPIkey">발급하기</button>
-    <button type="button" id="btnRetryAPIkey" style="display: none;">재발급하기</button>
+    
+    <div class="btnArea">
+        <div class="loadDiv">로딩중...</div>
+        <button type="button" id="btnGetAPIkey" style="display: none;">발급하기</button>
+        <button type="button" id="btnRetryAPIkey" style="display: none;">재발급하기</button>
+    </div>
     <div class="myKeyInfo">
+        <div class="loadDiv">로딩중...</div>
         <span>내 API Key: <div id="myKey"></div></span>
     </div>
     <script src="client.js"></script>

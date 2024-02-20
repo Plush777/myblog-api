@@ -66,3 +66,23 @@ btnRetryAPIkey.addEventListener('click', () => {
         getAPIkey('API key 재발급에 성공했습니다.');
     }
 });
+
+const loadDiv = document.querySelector('.loadDiv');
+
+window.onload = () => {
+    loadDiv.style.display = 'none';
+}
+
+if (getButtonCount) {
+    btnRetryAPIkey.style.display = 'block';
+    btnGetAPIkey.style.display = 'none';
+} else {
+    btnRetryAPIkey.style.display = 'none';
+    btnGetAPIkey.style.display = 'block';
+}
+
+if (!getMyAPIkey) {
+    myKey.innerHTML = '발급받은 API key가 없습니다.';
+} else {
+    myKey.innerHTML = getMyAPIkey;
+}
