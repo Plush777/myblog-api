@@ -66,14 +66,3 @@ btnRetryAPIkey.addEventListener('click', () => {
         getAPIkey('API key 재발급에 성공했습니다.');
     }
 });
-
-if (getButtonCount) {
-    btnRetryAPIkey.style.display = 'block';
-    btnGetAPIkey.style.display = 'none';
-}
-
-if (!getMyAPIkey) {
-    myKey.innerHTML = '발급받은 API key가 없습니다.';
-} else {
-    myKey.innerHTML = getMyAPIkey;
-}
