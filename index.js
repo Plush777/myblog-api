@@ -48,13 +48,15 @@ server.post('/api/key', (req, res) => {
     });
 });  
 
-if (process.env.STATE == 'dev') { 
+if (process.env.STATE == 'development') { 
+    console.log(process.env.STATE);
     server.get('/set', (req, res) => {
-        res.sendFile('index.html', {root: path.join(__dirname, 'public')});
+        res.sendFile('set.html', {root: path.join(__dirname, 'public')});
     }); 
-} else { 
+} else if (process.env.STATE == 'production') { 
+    console.log(process.env.STATE);
     server.get('/set', (req, res) => {
-        res.send('해당 도메인에서는 접근할 수 없습니다.');
+        res.sendFile('end.html', {root: path.join(__dirname, 'public')});
     }); 
 }
 
