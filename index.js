@@ -1,5 +1,3 @@
-process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
-
 const express = require('express');
 const server = express();
 const port = 8000;
