@@ -47,7 +47,7 @@ server.post('/api/key', (req, res) => {
 });
 
 server.get('/set', (req, res) => {
-    if (req.hostname !== 'localhost') {
+    if (process.env.NODE_ENV === 'production') {
         res.send('해당 도메인에서는 접근할 수 없습니다.');
     } else {
         res.sendFile('index.html', {root: path.join(__dirname, 'public')});
