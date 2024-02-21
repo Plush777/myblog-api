@@ -6,6 +6,8 @@ const path = require('path');
 const fs = require('fs');
 const uuidAPIkey = require('uuid-apikey');
 
+process.env.NODE_ENV =  process.env.NODE_ENV && process.env.NODE_ENV.trim().toLowerCase() == 'production' ? 'production' : 'development';
+
 server.use(express.static("public"));
 
 const today = new Date();
@@ -49,7 +51,7 @@ server.post('/api/key', (req, res) => {
 server.get('/set', (req, res) => {
     if (process.env.NODE_ENV === 'production') {
         res.send('해당 도메인에서는 접근할 수 없습니다.');
-    } else {
+    } else if (process.env.NODE_ENV === 'development') { 
         res.sendFile('index.html', {root: path.join(__dirname, 'public')});
     }
 });
