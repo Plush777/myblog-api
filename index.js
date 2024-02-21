@@ -48,7 +48,7 @@ server.post('/api/key', (req, res) => {
     });
 });  
 
-if (process.env.DOTENV_KEY == 'prod') {
+if (process.env.DOTENV_KEY) {
    server.get('/set', (req, res) => {
        res.send('해당 도메인에서는 접근할 수 없습니다.');
    }); 
