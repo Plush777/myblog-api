@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
+    <title>My blog api</title>
     <style>
-    .myKeyInfo{margin-top: 10px;
-        span{display: flex; column-gap: 10px;}
-    }
+    .myKeyInfo{display: flex; align-items: center; column-gap: 10px; margin-top: 10px;}
 
     .table{margin-bottom: 30px;
         table{border-collapse: collapse;}
@@ -16,8 +14,22 @@
     }
 
     .r{position: relative;}
-    .btnArea{width: 70px; height: 24px;}
+    .btnArea{min-width: 70px; height: 24px;}
     .loadDiv{position: absolute; top: 0; left: 0;}
+
+    @media (prefers-color-scheme: light) {
+        body{background-color: #fff; color: #000;}
+        .table{
+            th,td{border-color: #000;}
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        body{background-color: #222; color: #ececec;}
+        .table{
+            th,td{border-color: #ececec;}
+        }
+    }
     </style>
 </head>
 <body> 
@@ -83,8 +95,9 @@
         <button type="button" id="btnRetryAPIkey" style="display: none;">재발급하기</button>
     </div>
     <div class="myKeyInfo r">
-        <div class="loadDiv">로딩중...</div>
-        <span>내 API Key: <div id="myKey"></div></span>
+        <div class="loadDiv">가져오는 중...</div>
+        <span>내 API Key:</span>
+        <div id="myKey" style="display: none;"></div>
     </div>
     <script src="client.js"></script>
 </body> 

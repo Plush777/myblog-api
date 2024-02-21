@@ -71,6 +71,7 @@ const loadDiv = document.querySelectorAll('.loadDiv');
 
 window.onload = () => {
     loadDiv.forEach(div => (div.style.display = 'none'));
+    myKey.style.display = 'block';
 }
 
 if (getButtonCount) {
