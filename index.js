@@ -1,3 +1,5 @@
+process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
+
 const express = require('express');
 const server = express();
 const port = 8000;
@@ -6,7 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const uuidAPIkey = require('uuid-apikey');
 
-// console.log(process.env.NODE_ENV);
+console.log(process.env.NODE_ENV);
 server.use(express.static("public"));
 
 const today = new Date();
@@ -47,13 +49,15 @@ server.post('/api/key', (req, res) => {
     });
 });
 
-server.get('/set', (req, res) => {
-    if (process.env.NODE_ENV !== 'development') {
-        res.send('해당 도메인에서는 접근할 수 없습니다.');
-    } else { 
+if (process.env.NODE_ENV == 'production') {
+   server.get('/set', (req, res) => {
+       res.send('해당 도메인에서는 접근할 수 없습니다.');
+   });
+} else if (process.env.NODE_ENV == 'development') { 
+    server.get('/set', (req, res) => {
         res.sendFile('index.html', {root: path.join(__dirname, 'public')});
-    }
-});
+    });
+}
 
 server.get('/', (req, res) => {
     res.sendFile('index.html', {root: path.join(__dirname, 'public')});
