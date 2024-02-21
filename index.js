@@ -5,8 +5,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const uuidAPIkey = require('uuid-apikey');
+require('dotenv').config();
 
-console.log(process.env.NODE_ENV);
+// console.log(process.env);
 server.use(express.static("public"));
 
 const today = new Date();
@@ -45,13 +46,13 @@ server.post('/api/key', (req, res) => {
         apiKey: key.apiKey,
         uuid: key.uuid
     });
-});
+});  
 
-if (process.env.NODE_ENV == 'production') {
+if (process.env.HELLO == 'prod') {
    server.get('/set', (req, res) => {
        res.send('해당 도메인에서는 접근할 수 없습니다.');
-   });
-} else if (process.env.NODE_ENV == 'development') { 
+   }); 
+} else { 
     server.get('/set', (req, res) => {
         res.sendFile('index.html', {root: path.join(__dirname, 'public')});
     });
