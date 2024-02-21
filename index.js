@@ -44,18 +44,20 @@ server.post('/api/key', (req, res) => {
 
     res.json({
         apiKey: key.apiKey,
-        uuid: key.uuid
+        uuid: key.uuid 
     });
 });  
 
-if (process.env.DOTENV_KEY) {
-   server.get('/set', (req, res) => {
-       res.send('해당 도메인에서는 접근할 수 없습니다.');
-   }); 
-} else { 
+const getSet = () => {
     server.get('/set', (req, res) => {
         res.sendFile('index.html', {root: path.join(__dirname, 'public')});
-    });
+    }); 
+}
+
+if (process.env.STATE == 'dev') { 
+    getSet();
+} else { 
+    res.send('해당 도메인에서는 접근할 수 없습니다.');
 }
 
 server.get('/', (req, res) => {
