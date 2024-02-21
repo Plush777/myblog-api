@@ -15,7 +15,8 @@
         td{font-size: 14px;}
     }
 
-    .btnArea{position: relative; width: 70px; height: 24px;}
+    .r{position: relative;}
+    .btnArea{width: 70px; height: 24px;}
     .loadDiv{position: absolute; top: 0; left: 0;}
     </style>
 </head>
@@ -76,12 +77,12 @@
         </table>
     </div>
     
-    <div class="btnArea">
+    <div class="btnArea r">
         <div class="loadDiv">로딩중...</div>
         <button type="button" id="btnGetAPIkey" style="display: none;">발급하기</button>
         <button type="button" id="btnRetryAPIkey" style="display: none;">재발급하기</button>
     </div>
-    <div class="myKeyInfo">
+    <div class="myKeyInfo r">
         <div class="loadDiv">로딩중...</div>
         <span>내 API Key: <div id="myKey"></div></span>
     </div>

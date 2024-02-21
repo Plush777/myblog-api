@@ -67,10 +67,10 @@ btnRetryAPIkey.addEventListener('click', () => {
     }
 });
 
-const loadDiv = document.querySelector('.loadDiv');
+const loadDiv = document.querySelectorAll('.loadDiv');
 
 window.onload = () => {
-    loadDiv.style.display = 'none';
+    loadDiv.forEach(div => (div.style.display = 'none'));
 }
 
 if (getButtonCount) {
